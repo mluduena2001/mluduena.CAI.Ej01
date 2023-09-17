@@ -1,10 +1,17 @@
 using System;
+using System.IO.Pipes;
 using System.Linq;
+using mluduena.CAI.Ej01;
+
+
+
 
 namespace mluduena.CAI.Ej01
 {
+    
     public partial class Form1 : Form
     {
+
         public Form1()
         {
             InitializeComponent();
@@ -12,14 +19,16 @@ namespace mluduena.CAI.Ej01
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string documento = txtDocumento.Text; int documentoOut = 0; string nombre = txtNombre.Text;
+            Ejercicio01Model validar = new Ejercicio01Model();
+
+            string documento = txtDocumento.Text; long documentoOut = 0; string nombre = txtNombre.Text;
             string apellido = txtApellido.Text; string fechaNac = txtFechaNac.Text; DateTime fechaNacOut = DateTime.Now;
             bool flag = false; string acumuladorErrores = "";
 
-            acumuladorErrores = acumuladorErrores + ValidarDocumento(documento, ref documentoOut);
-            acumuladorErrores = acumuladorErrores + ValidarNombreApellido(nombre, "NOMBRE");
-            acumuladorErrores = acumuladorErrores + ValidarNombreApellido(apellido, "APELLIDO");
-            acumuladorErrores = acumuladorErrores + ValidarFecha(fechaNac, ref fechaNacOut);
+            acumuladorErrores = acumuladorErrores + validar.ValidarDocumento(documento, ref documentoOut);
+            acumuladorErrores = acumuladorErrores + validar.ValidarNombreApellido(nombre, "NOMBRE");
+            acumuladorErrores = acumuladorErrores + validar.ValidarNombreApellido(apellido, "APELLIDO");
+            acumuladorErrores = acumuladorErrores + validar.ValidarFecha(fechaNac, ref fechaNacOut);
 
             if (!string.IsNullOrEmpty(acumuladorErrores))
             {
@@ -27,13 +36,20 @@ namespace mluduena.CAI.Ej01
             }
             else
             {
-                lstDatos.Items.Add(documentoOut);
-                lstDatos.Items.Add(nombre);
-                lstDatos.Items.Add(apellido);
-                lstDatos.Items.Add(fechaNacOut);
+                Ejercicio01Model persona = new Ejercicio01Model();
+                persona.Documento = documentoOut;
+                persona.Nombre = nombre;
+                persona.Apellido = apellido;
+                persona.FechaNacimiento = fechaNacOut;
+
+                lstDatos.Items.Add(persona.Documento);
+                lstDatos.Items.Add(persona.Nombre);
+                lstDatos.Items.Add(persona.Apellido);
+                lstDatos.Items.Add(persona.FechaNacimiento);
             }
         }
 
+        /*
         private string ValidarDocumento(string par1, ref int par2)
         {
             if (string.IsNullOrEmpty(par1))
@@ -92,7 +108,7 @@ namespace mluduena.CAI.Ej01
             {
                 return "";
             }
-        }
+        }*/
 
     }
 }
